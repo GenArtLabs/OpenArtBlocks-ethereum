@@ -1,5 +1,6 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { Alert, Button, Card, Col, Input, List, Menu, Row } from "antd";
+import axios from "axios";
+import { Alert, Button, Card, Col, Input, List, Menu, Row, InputNumber } from "antd";
 import "antd/dist/antd.css";
 import React, { useCallback, useEffect, useState } from "react";
 import ReactJson from "react-json-view";
@@ -7,7 +8,7 @@ import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import Web3Modal from "web3modal";
 import "./App.css";
 import { Account, Address, AddressInput, Contract, Faucet, GasGauge, Header, Ramp, ThemeSwitch } from "./components";
-import {INFURA_ID, NETWORK, NETWORKS } from "./constants";
+import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
 import { Transactor } from "./helpers";
 import {
   useBalance,
@@ -23,9 +24,10 @@ import {
 const { BufferList } = require("bl");
 // https://www.npmjs.com/package/ipfs-http-client
 const ipfsAPI = require("ipfs-http-client");
+
 const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" });
 
-const { ethers } = require("ethers");
+const { ethers, BigNumber } = require("ethers");
 
 /*
     Welcome to 🏗 scaffold-eth !
@@ -93,8 +95,12 @@ if (DEBUG) console.log("📡 Connecting to Mainnet Ethereum");
 //
 // attempt to connect to our own scaffold eth rpc and if that fails fall back to infura...
 // Using StaticJsonRpcProvider as the chainId won't change see https://github.com/ethers-io/ethers.js/issues/901
-const scaffoldEthProvider = navigator.onLine ? new ethers.providers.StaticJsonRpcProvider("https://rpc.scaffoldeth.io:48544") : null;
-const mainnetInfura = navigator.onLine ? new ethers.providers.StaticJsonRpcProvider("https://mainnet.infura.io/v3/" + INFURA_ID) : null;
+const scaffoldEthProvider = navigator.onLine
+  ? new ethers.providers.StaticJsonRpcProvider("https://rpc.scaffoldeth.io:48544")
+  : null;
+const mainnetInfura = navigator.onLine
+  ? new ethers.providers.StaticJsonRpcProvider("https://mainnet.infura.io/v3/" + INFURA_ID)
+  : null;
 // ( ⚠️ Getting "failed to meet quorum" errors? Check your INFURA_I
 
 // 🏠 Your local provider is usually pointed at your local blockchain
@@ -218,13 +224,14 @@ function App(props) {
           const tokenURI = await readContracts.YourCollectible.tokenURI(tokenId);
           console.log("tokenURI", tokenURI);
 
-          const ipfsHash = tokenURI.replace("https://ipfs.io/ipfs/", "");
-          console.log("ipfsHash", ipfsHash);
+          // const ipfsHash = tokenURI.replace("https://ipfs.io/ipfs/", "");
+          // console.log("ipfsHash", ipfsHash);
 
-          const jsonManifestBuffer = await getFromIPFS(ipfsHash);
+          // const jsonManifestBuffer = await getFromIPFS(ipfsHash);
 
           try {
-            const jsonManifest = JSON.parse(jsonManifestBuffer.toString());
+            // const jsonManifest = JSON.parse(jsonManifestBuffer.toString());
+            const jsonManifest = (await axios.get(tokenURI)).data;
             console.log("jsonManifest", jsonManifest);
             collectibleUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
           } catch (e) {
@@ -331,7 +338,8 @@ function App(props) {
                   }}
                 >
                   <b>{networkLocal && networkLocal.name}</b>
-                </Button>.
+                </Button>
+                .
               </div>
             }
             type="error"
@@ -414,6 +422,7 @@ function App(props) {
   const [sending, setSending] = useState();
   const [ipfsHash, setIpfsHash] = useState();
   const [ipfsDownHash, setIpfsDownHash] = useState();
+  const [mintNumber, setMintNumber] = useState();
 
   const [downloading, setDownloading] = useState();
   const [ipfsContent, setIpfsContent] = useState();
@@ -435,6 +444,16 @@ function App(props) {
               to="/"
             >
               YourCollectibles
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/mint">
+            <Link
+              onClick={() => {
+                setRoute("/mint");
+              }}
+              to="/mint"
+            >
+              Mint
             </Link>
           </Menu.Item>
           <Menu.Item key="/transfers">
@@ -538,6 +557,24 @@ function App(props) {
                   );
                 }}
               />
+            </div>
+          </Route>
+
+          <Route path="/mint">
+            <div style={{ width: 600, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+              <InputNumber min={1} max={20} defaultValue={1} onChange={newValue => setMintNumber(Number(newValue))}
+                value={mintNumber}
+                placeholder="Number of tokens to mint"
+               />
+              <Button
+                onClick={async () => {
+                  const n = mintNumber ?? 1;
+                  const price = (await readContracts.YourCollectible.PRICE()).mul(n);
+                  tx(writeContracts.YourCollectible.mint(n, { value: price }));
+                }}
+              >
+                Mint
+              </Button>
             </div>
           </Route>
 

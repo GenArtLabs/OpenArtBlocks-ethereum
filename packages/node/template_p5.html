@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cordial Token</title>
+  <meta name="description" content="Token description">
+  <meta name="twitter:card" content="Token description">
+  <meta name="twitter:creator" content="@louis_mouhat">
+  <!-- <meta property="og:url" content="https://chromorphs.xyz/woc"> -->
+  <meta property="og:description" content="Token description">
+  <!-- <meta property="og:image" content="https://cloudflare-ipfs.com/ipfs/QmVjgMZva4VymugRtH3Gn1SYVdseFFpb3gU7efRWWtDiBH"> general-->
+  <style>
+    body {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      width: 100vw;
+      height: 100vh;
+      padding: 0;
+      margin: 0;
+    }
+
+    main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font-size: 100%;
+      font: inherit;
+      vertical-align: baseline;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+  <script>
+    window.tokenHash = "{{INJECT_HASH_HERE}}";
+  </script>
+  <script>{{INJECT_SCRIPT_HERE}}</script>
+</head>
+
+<body>
+
+</body>
+
+</html>
