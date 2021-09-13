@@ -1,5 +1,5 @@
-# 🏗 Scaffold-ETH - 🎟 Simple NFT Example
-
+# OpenArtBlocks
+## Based on Scaffold-ETH - Simple NFT Example
 > Build, mint, and send around your own ERC721!
 
 # 🏃‍♀️ Quick Start
