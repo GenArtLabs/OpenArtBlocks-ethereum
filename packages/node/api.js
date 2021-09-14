@@ -30,6 +30,7 @@ let script = null;
 
 async function refreshScript() {
   const res = contract.methods.script().call();
+  const res = await contract.methods.script().call();
   script = {
     string: res,
     lastUpdated: new Date(),
