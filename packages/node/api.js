@@ -1,4 +1,5 @@
-const { PROVIDER_ADDRESS, CONTRACT_ADDRESS, ABI } = require('./config.js');
+const { PROVIDER_ADDRESS, CONTRACT_ADDRESS, ABI } = require('./config');
+const { parse } = require('./parse_script');
 const Web3 = require('web3');
 const { readFileSync } = require('fs');
 
@@ -15,33 +16,36 @@ function traits(hash) {
 }
 
 // TODO manage multiple script types (contract.scriptType)
-const HTML = readFileSync('template_p5.html').toString();
+const HTML_p5 = readFileSync('template_p5.html').toString();
+const HTML_svg = readFileSync('template_svg.html').toString();
+const HTML = [HTML_p5, HTML_svg];
 
 // SOME WEB3 STUFF TO CONNECT TO SMART CONTRACT
 const provider = new Web3.providers.HttpProvider(PROVIDER_ADDRESS);
 const web3infura = new Web3(provider);
 const contract = new web3infura.eth.Contract(ABI, CONTRACT_ADDRESS);
 
-function injectHTML(script, hash) {
-  return HTML.replace('{{INJECT_SCRIPT_HERE}}', script).replace('{{INJECT_HASH_HERE}}', hash);
+function injectHTML(script, hash, html) {
+  return html.replace('{{INJECT_SCRIPT_HERE}}', script).replace('{{INJECT_HASH_HERE}}', hash);
 }
 
-let script = null;
+let infos = null;
 
-async function refreshScript() {
-  const res = contract.methods.script().call();
+async function refreshInfos() {
   const res = await contract.methods.script().call();
-  script = {
-    string: res,
+  const js = await parse(res.slice(1));
+  infos = {
+    string: js,
+    html: HTML[Number(res[0])] ?? null,
     lastUpdated: new Date(),
   };
 }
-refreshScript();
+refreshInfos();
 
 const TIMEOUT = 15 * 60 * 1000;
 async function getScript() {
-  if (!script || new Date() - script.lastUpdated > TIMEOUT) await refreshScript();
-  return script.string;
+  if (!infos || new Date() - infos.lastUpdated > TIMEOUT) await refreshInfos();
+  return infos.string;
 }
 
 async function getTokenHash(id) {
@@ -92,7 +96,7 @@ const getLive = async (req, res) => {
   if (!tokenHash) return res.sendStatus(404);
 
   const script = await getScript();
-  const html = injectHTML(script, tokenHash);
+  const html = injectHTML(script, tokenHash, infos.html);
 
   return res.setHeader('Content-type', 'text/html').send(html);
 }
