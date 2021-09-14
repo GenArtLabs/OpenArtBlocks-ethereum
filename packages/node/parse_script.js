@@ -2,7 +2,15 @@ const base85 = require('base85');
 const { promisify } = require('util');
 const { unzip } = require('zlib');
 
-// Standard zlib deflate
+// An easy way to reduce gas costs is to compress the js code;
+// You can use this tool to do so
+// https://gchq.github.io/CyberChef/#recipe=Zlib_Deflate('Dynamic%20Huffman%20Coding')To_Base85('!-u',true)Find_/_Replace(%7B'option':'Regex','string':'%5E'%7D,'1',false,false,false,false)
+// This will compress your data and add a prefix to show how it was encoded
+// Don't forget to prefix the script once more with the character corresponding
+// to your type of script (0: p5, 1: svg...), as seen in api.js
+
+
+// Standard zlib inflate
 const zlib = promisify(unzip);
 
 // Base85 standard alphabet, with delimiters
