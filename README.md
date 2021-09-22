@@ -6,11 +6,10 @@
 Required: [Node](https://nodejs.org/dist/latest-v12.x/) plus [Yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable) and [Git](https://git-scm.com/downloads)
 
 ```
-git clone https://github.com/austintgriffith/scaffold-eth.git simple-nft-example
+git clone https://github.com/CreativeBlockchainDevelopers/OpenArtBlocks.git open_artblocks
 ```
 ```
-cd simple-nft-example
-git checkout simple-nft-example
+cd open_artblocks
 yarn install
 yarn start
 ```
@@ -18,30 +17,32 @@ yarn start
 > in a second terminal window:
 
 ```
-cd simple-nft-example
+cd open_artblocks
 yarn chain
 ```
+
+> ✏️ Edit the transfer script (packages/hardhat/scripts/transfer.js) and update the toAddress to your frontend address (wallet address in the top right or localhost:3000).
 
 > in a third terminal window:
 
 ```
-cd simple-nft-example
+cd open_artblocks
 yarn deploy
+yarn transfer
 ```
 
-📱 Open http://localhost:3000 to see the app
-
-> ✏️ Edit the mint script mint.js in packages/hardhat/scripts and update the toAddress to your frontend address (wallet address in the top right or localhost:3000).
+> To launch the server
+```
+yarn node-app:start
+```
 
 ![nft1](https://user-images.githubusercontent.com/526558/124386962-37e5dd00-dcb3-11eb-911e-0afce760d7ee.png)
 
-> in a terminal window run the mint script:
-```
-yarn mint
-```
+📱 Open http://localhost:3000 to see the app
+
 ![nft2](https://user-images.githubusercontent.com/526558/124386972-3d432780-dcb3-11eb-933e-dad7dfd313b2.png)
 
-👀 You should see your collectibles show up if you minted to the correct address:
+👀 You can mint your token in the "min" tab after grabing some ether. View your tokens in the first tab.
 
 ![nft3](https://user-images.githubusercontent.com/526558/124386983-48965300-dcb3-11eb-88a7-e88ad6307976.png)
 
