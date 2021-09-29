@@ -1,5 +1,5 @@
 const express = require('express');
-const { getMetadata, getLive } = require('./api');
+const { getMetadata, getLive, getImage } = require('./api');
 const compression = require('compression');
 const cors = require('cors');
 
@@ -23,6 +23,7 @@ app.use(compression());
 
 app.get('/api/:id', getMetadata);
 app.get('/live/:id', getLive);
+app.get('/:id', getImage);
 
 app.listen(port, () => {
   console.log(`Maker listening on port ${port}`);

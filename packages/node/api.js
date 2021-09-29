@@ -1,5 +1,6 @@
 const { PROVIDER_ADDRESS, CONTRACT_ADDRESS, ABI } = require('./config');
 const { parse } = require('./parse_script');
+const { getStaticImagePath } = require('./render');
 const Web3 = require('web3');
 const { readFileSync } = require('fs');
 
@@ -16,8 +17,8 @@ function traits(hash) {
 }
 
 // TODO manage multiple script types (contract.scriptType)
-const HTML_p5 = readFileSync('template_p5.html').toString();
-const HTML_svg = readFileSync('template_svg.html').toString();
+const HTML_p5 = readFileSync('templates/p5.html').toString();
+const HTML_svg = readFileSync('templates/svg.html').toString();
 const HTML = [HTML_p5, HTML_svg];
 
 // SOME WEB3 STUFF TO CONNECT TO SMART CONTRACT
@@ -35,6 +36,7 @@ async function refreshInfos() {
   const res = await contract.methods.script().call();
   const js = await parse(res.slice(1));
   infos = {
+    count: 100,// TODO
     string: js,
     html: HTML[Number(res[0])] ?? null,
     lastUpdated: new Date(),
@@ -43,9 +45,18 @@ async function refreshInfos() {
 refreshInfos();
 
 const TIMEOUT = 15 * 60 * 1000;
-async function getScript() {
+async function refreshIfNeeded() {
   if (!infos || new Date() - infos.lastUpdated > TIMEOUT) await refreshInfos();
+}
+
+async function getScript() {
+  await refreshIfNeeded();
   return infos.string;
+}
+
+async function getCount() {
+  await refreshIfNeeded();
+  return infos.count;
 }
 
 async function getTokenHash(id) {
@@ -76,12 +87,12 @@ const getMetadata = async (req, res) => {
   const attributes = traits(tokenHash)
   // CHECK OPENSEA METADATA STANDARD DOCUMENTATION https://docs.opensea.io/docs/metadata-standards
   let metadata = {
-    name: 'CordialToken',
-    description: 'Token description',
+    name: 'MyToken',
+    description: 'My Token description',
     tokenId: id,
     tokenHash,
-    image: 'https://www.thefamouspeople.com/profiles/images/george-sand-5.jpg',
-    external_url: HOST,
+    image: `${HOST}/${id}`,
+    external_url: `${HOST}/live/${id}`,
     attributes,
   };
 
@@ -101,4 +112,20 @@ const getLive = async (req, res) => {
   return res.setHeader('Content-type', 'text/html').send(html);
 }
 
-module.exports = { getMetadata, getLive };
+const getImage = async (req, res) => {
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) return res.sendStatus(404);
+
+  const tokenHash = await getTokenHash(id);
+  if (!tokenHash) return res.sendStatus(404);
+
+  const count = await getCount();
+  if (count == undefined) return res.sendStatus(404);
+
+  const script = await getScript();
+  const path = await getStaticImagePath(script, tokenHash, count);
+
+  return res.sendFile(path, { root: __dirname });
+}
+
+module.exports = { getMetadata, getLive, getImage };

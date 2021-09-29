@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+  <script>
+    window.tokenHash = "{{INJECT_HASH_HERE}}";
+  </script>
+  <script>{{INJECT_SCRIPT_HERE}}</script>
+  <script>
+    let count = {{INJECT_COUNT_HERE}};
+    let resolve;
+    const shot = () => resolve(document.getElementsByTagName('canvas')[0].toDataURL('image/png').substring(22));
+
+    const _draw = window.draw;
+    window.draw = () => {
+      if (count < 0) return;
+      else if (count-- === 0) shot();
+      else _draw();
+    };
+
+    const promise = new Promise((res, rej) => {
+      resolve = res;
+    });
+
+    window.wait = async (callback) => {
+      callback(await promise);
+    };
+
+  </script>
+</head>
+
+<body>
+</body>
+
+</html>
