@@ -1,23 +1,28 @@
 const webdriver = require('selenium-webdriver');
-const firefox = require('selenium-webdriver/firefox');
+const chrome = require('selenium-webdriver/chrome');
 const { readFileSync, promises } = require('fs');
 const { writeFile, access } = promises;
 
 const HTML_p5 = readFileSync('templates/p5_render.html').toString();
 
 const buildDriver = () => {
-  let options = new firefox.Options();
+  let options = new chrome.Options();
+  
+  options.setChromeBinaryPath(process.env.CHROME_BINARY_PATH);
+  let serviceBuilder = new chrome.ServiceBuilder(process.env.CHROME_DRIVER_PATH);
+  
 
   //Don't forget to add these for heroku
   options.headless();
-  // options.addArguments("--disable-gpu");
-  // options.addArguments("--no-sandbox");
-
+  options.addArguments("--disable-gpu");
+  options.addArguments("--no-sandbox");
 
   let driver = new webdriver.Builder()
-    .forBrowser('firefox')
-    .setFirefoxOptions(options)
-    .build();
+      .forBrowser('chrome')
+      .setChromeOptions(options)
+      .setChromeService(serviceBuilder)
+      .build();
+
   return driver;
 }
 const driver = buildDriver();
