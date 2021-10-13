@@ -11,14 +11,14 @@ app.use(cors());
 
 // configure middlewares
 app.use(compression());
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// const publicAdminRoot = 'dist';
-// app.get('/', (req, res) => {
-//   res.sendFile('index.html', { root: publicAdminRoot });
-// });
-// app.use(express.static(publicAdminRoot));
+const publicAdminRoot = '../react-app/build';
+app.get('/', (req, res) => {
+  res.sendFile('index.html', { root: publicAdminRoot });
+});
+app.use(express.static(publicAdminRoot));
 
 
 app.get('/api/:id', getMetadata);
