@@ -1,8 +1,8 @@
 {
-  "3": {
-    "ropsten": {
-      "name": "ropsten",
-      "chainId": "3",
+  "4": {
+    "rinkeby": {
+      "name": "rinkeby",
+      "chainId": "4",
       "contracts": {
         "YourCollectible": {
           "address": "0x613b697182BfDD90Ce90d3dFb9113501aCD7fBA2",
@@ -60,6 +60,25 @@
                 }
               ],
               "name": "ApprovalForAll",
+              "type": "event"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": true,
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "indexed": true,
+                  "internalType": "uint256",
+                  "name": "tokenNumber",
+                  "type": "uint256"
+                }
+              ],
+              "name": "Mint",
               "type": "event"
             },
             {
