@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract TestIKul is ERC721URIStorage, ERC721Enumerable, Ownable {
+contract YourCollectible is ERC721URIStorage, ERC721Enumerable, Ownable {
     // Must override these methods because of ERC721URIStorage + ERC721Enumerable inheritance
     function _beforeTokenTransfer(
         address from,
