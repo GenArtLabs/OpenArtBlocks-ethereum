@@ -1,6 +1,7 @@
 const { PROVIDER_ADDRESS, CONTRACT_ADDRESS, ABI } = require('./config');
 const { parse } = require('./parse_script');
 const { getStaticImagePath } = require('./render');
+
 const Web3 = require('web3');
 const { readFileSync } = require('fs');
 
@@ -22,9 +23,24 @@ const HTML_svg = readFileSync('templates/svg.html').toString();
 const HTML = [HTML_p5, HTML_svg];
 
 // SOME WEB3 STUFF TO CONNECT TO SMART CONTRACT
+// const provider = new Web3.providers.WebsocketProvider(PROVIDER_ADDRESS);
 const provider = new Web3.providers.HttpProvider(PROVIDER_ADDRESS);
 const web3infura = new Web3(provider);
 const contract = new web3infura.eth.Contract(ABI, CONTRACT_ADDRESS);
+
+contract.getPastEvents('Mint', {fromBlock: 0}).then(events => {
+  events.forEach(event => {
+    // check if uploaded to ipfs
+    console.log(event.raw);
+  });
+});
+
+
+contract.events.Mint({}).on('data', function(event){
+  // upload to ipfs
+  const [_, to, tokenIndex] = event.raw.topics;
+  console.log(to, tokenIndex);
+})
 
 function injectHTML(script, hash, html) {
   return html.replace('{{INJECT_SCRIPT_HERE}}', script).replace('{{INJECT_HASH_HERE}}', hash);

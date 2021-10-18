@@ -42,6 +42,10 @@ contract YourCollectible is ERC721URIStorage, ERC721Enumerable, Ownable {
     }
 
     // End of transparent overrides
+    event Mint(
+        address indexed to,
+        uint256 indexed tokenNumber
+    );
 
     uint256 public constant MAX_TOKENS = 10000;
     uint256 public constant MAX_TOKENS_PER_TRANSACTION = 20;
@@ -113,6 +117,7 @@ contract YourCollectible is ERC721URIStorage, ERC721Enumerable, Ownable {
             uint256 mintIndex = totalSupply();
             _safeMint(msg.sender, mintIndex);
             creationDates[mintIndex] = block.number;
+            emit Mint(msg.sender, mintIndex);
         }
     }
 
@@ -127,6 +132,7 @@ contract YourCollectible is ERC721URIStorage, ERC721Enumerable, Ownable {
             uint256 mintIndex = totalSupply();
             _safeMint(toAddress, mintIndex);
             creationDates[mintIndex] = block.number;
+            emit Mint(toAddress, mintIndex);
         }
     }
 
