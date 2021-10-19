@@ -9,7 +9,7 @@ const { ethers } = require("ethers");
 // https://docs.blocknative.com/notify
 const callbacks = {};
 
-const DEBUG = false;
+const DEBUG = true;
 
 export default function Transactor(providerOrSigner, gasPrice, etherscan) {
   if (typeof providerOrSigner !== "undefined") {
@@ -29,7 +29,7 @@ export default function Transactor(providerOrSigner, gasPrice, etherscan) {
       }
 
       console.log("network", network);
-
+      
       var options = null;
       var notify = null;
       if(navigator.onLine){
@@ -45,11 +45,11 @@ export default function Transactor(providerOrSigner, gasPrice, etherscan) {
               possibleFunction(txInformation.transaction);
             }
           },
-        };
+        };  
 
         notify = Notify(options);
       }
-
+       
 
       let etherscanNetwork = "";
       if (network.name && network.chainId > 1) {
