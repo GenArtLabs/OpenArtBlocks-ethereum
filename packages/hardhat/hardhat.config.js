@@ -25,7 +25,8 @@ const { isAddress, getAddress, formatUnits, parseUnits } = utils;
 //
 // Select the network you want to deploy to here:
 //
-const defaultNetwork = "localhost";
+const defaultNetwork = "matic";
+
 
 function mnemonic() {
   try {
@@ -99,11 +100,9 @@ module.exports = {
       },
     },
     matic: {
-      url: "https://rpc-mainnet.maticvigil.com/",
+      url: "https://polygon-mainnet.infura.io/v3/08defd3ed0394d8a88ca8bce78c20903",
       gasPrice: 1000000000,
-      accounts: {
-        mnemonic: mnemonic(),
-      },
+      accounts: [privateKey]
     },
     rinkebyArbitrum: {
       url: "https://rinkeby.arbitrum.io/rpc",

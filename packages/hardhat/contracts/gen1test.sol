@@ -71,7 +71,7 @@ contract YourCollectible is ERC721URIStorage, ERC721Enumerable, Ownable {
     mapping(uint256 => uint256) public creationDates;
 
     constructor() ERC721("YourCollectible", "YCB") {
-        baseTokenURI = "https://api.nft/json/";
+        baseTokenURI = "https://gen1.valou.club/json/";
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
