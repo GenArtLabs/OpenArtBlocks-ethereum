@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract YourCollectible is ERC721URIStorage, ERC721Enumerable, Ownable {
+contract GenArtValouTest is ERC721URIStorage, ERC721Enumerable, Ownable {
     // Must override these methods because of ERC721URIStorage + ERC721Enumerable inheritance
     function _beforeTokenTransfer(
         address from,
@@ -47,9 +47,9 @@ contract YourCollectible is ERC721URIStorage, ERC721Enumerable, Ownable {
         uint256 indexed tokenNumber
     );
 
-    uint256 public constant MAX_TOKENS = 10000;
-    uint256 public constant MAX_TOKENS_PER_TRANSACTION = 20;
-    uint256 public constant PRICE = 0.025 ether;
+    uint256 public constant MAX_TOKENS = 100;
+    uint256 public constant MAX_TOKENS_PER_TRANSACTION = 1;
+    uint256 public constant PRICE = 0 ether;
 
     uint256 public constant DEVELOPER_SHARE = 45;
     uint256 public constant ARTIST_SHARE = 45;
@@ -57,10 +57,10 @@ contract YourCollectible is ERC721URIStorage, ERC721Enumerable, Ownable {
     uint256 public constant SHARE_SUM = 100;
 
     address public developerAddress =
-        0xbc501F3D42FC3Ac4c022F64b3DF1ea9De4236cB1;
-    address public artistAddress = 0xbc501F3D42FC3Ac4c022F64b3DF1ea9De4236cB1;
+        0x30e7032f92c143E1F5e5118235fC291E7CafA4DD;
+    address public artistAddress = 0x30e7032f92c143E1F5e5118235fC291E7CafA4DD;
     address public constant ADVISOR_ADDRESS =
-        0xbc501F3D42FC3Ac4c022F64b3DF1ea9De4236cB1;
+        0x30e7032f92c143E1F5e5118235fC291E7CafA4DD;
 
     string public script;
     string public scriptType = "p5js";
@@ -70,8 +70,8 @@ contract YourCollectible is ERC721URIStorage, ERC721Enumerable, Ownable {
 
     mapping(uint256 => uint256) public creationDates;
 
-    constructor() ERC721("YourCollectible", "YCB") {
-        baseTokenURI = "https://gen1.valou.club/json/";
+    constructor() ERC721("Gen Art Valou Test", "GAVT") {
+        baseTokenURI = "https://gen-art-test-valou.herokuapp.com/json/";
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
