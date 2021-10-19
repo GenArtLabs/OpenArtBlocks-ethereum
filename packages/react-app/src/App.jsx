@@ -52,8 +52,8 @@ const { ethers, BigNumber } = require("ethers");
 const targetNetwork = NETWORKS.matic; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
-const DEBUG = false;
-const NETWORKCHECK = false;
+const DEBUG = true;
+const NETWORKCHECK = true;
 
 // EXAMPLE STARTING JSON:
 const STARTING_JSON = {
