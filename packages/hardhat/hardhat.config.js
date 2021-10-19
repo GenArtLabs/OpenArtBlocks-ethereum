@@ -28,6 +28,7 @@ const { isAddress, getAddress, formatUnits, parseUnits } = utils;
 const defaultNetwork = "matic";
 
 
+
 function mnemonic() {
   try {
     return fs.readFileSync("./mnemonic.txt").toString().trim();
@@ -51,7 +52,7 @@ module.exports = {
   etherscan: {
     // Your API key for Etherscan
     // Obtain one at https://etherscan.io/
-    apiKey: "MY_KEY_HERE",
+    apiKey: "17Q2CKNN7N3NV1T71SFFZ5TNGGJ8II3DMY",
   },
 
   networks: {
@@ -101,7 +102,7 @@ module.exports = {
     },
     matic: {
       url: "https://polygon-mainnet.infura.io/v3/08defd3ed0394d8a88ca8bce78c20903",
-      gasPrice: 1000000000,
+      gasPrice: 4000000000,
       accounts: [privateKey]
     },
     rinkebyArbitrum: {
