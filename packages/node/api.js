@@ -103,8 +103,8 @@ const getMetadata = async (req, res) => {
   const attributes = traits(tokenHash)
   // CHECK OPENSEA METADATA STANDARD DOCUMENTATION https://docs.opensea.io/docs/metadata-standards
   let metadata = {
-    name: `MyToken #${id}`,
-    description: 'My Token description',
+    name: `Pinguin chelou #${id}`,
+    description: 'Une oeuvre generative qualitative de Squirelo pour le Valou Club',
     tokenID: id,
     token_hash: tokenHash,
     image: `${HOST}/${id}`,
