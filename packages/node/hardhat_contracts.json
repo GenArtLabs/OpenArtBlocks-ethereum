@@ -4,7 +4,7 @@
       "name": "matic",
       "chainId": "137",
       "contracts": {
-        "GenArtValouTest": {
+        "YourCollectible": {
           "address": "0x00fd8238683eb0f3e6ba8af94f8079bfd49a3aaf",
           "abi": [
             {
