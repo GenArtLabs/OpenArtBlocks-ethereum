@@ -1,5 +1,5 @@
 
-const config = require("./hardhat_contracts.json");
+const config = require("./contract-info.json");
 
 const contract = Object.values(Object.values(Object.values(config)[0])[0].contracts)[0];
 
